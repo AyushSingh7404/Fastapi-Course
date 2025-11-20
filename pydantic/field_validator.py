@@ -25,7 +25,14 @@ class Patient(BaseModel):
     @classmethod
     def transform_name(cls, name):
         return name.upper()
-
+    
+    @field_validator('age', mode='after')   # when mode is beore then we get vlaue as string before it is converted to integer, but when we use after mode then we get value after if converts to integer
+    @classmethod                            # Default mode is after
+    def check_age(cls, value):
+        if 18 < value < 45:
+            return value
+        else:
+            raise ValueError('Age must be between 18 and 45')
 
 
 def update_patient_data(patient: Patient):
